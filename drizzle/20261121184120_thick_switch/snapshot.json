@@ -1,0 +1,246 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "56da9d01-a691-46f6-8b7a-c7da56541901",
+  "prevIds": [
+    "745d1a30-7def-4475-80a2-70938d1952af"
+  ],
+  "footprints": [
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "answers",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.answers.user_id.type",
+        "s|colprop|public.answers.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.answers",
+        "n|sch|public",
+        "n|col|public.answers.user_id"
+      ],
+      "sqlHash": "6454aa73c80181fe"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "bookmarks",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.bookmarks.user_id.type",
+        "s|colprop|public.bookmarks.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.user_id"
+      ],
+      "sqlHash": "122c21dbc6af7204"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "entitlements",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.entitlements.user_id.type",
+        "s|colprop|public.entitlements.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.entitlements",
+        "n|sch|public",
+        "n|col|public.entitlements.user_id"
+      ],
+      "sqlHash": "70767f93e5734bb0"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "error_reports",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.error_reports.user_id.notNull",
+        "s|colprop|public.error_reports.user_id.type",
+        "s|colprop|public.error_reports.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.error_reports",
+        "n|sch|public",
+        "n|col|public.error_reports.user_id"
+      ],
+      "sqlHash": "08e907c80ae2c160"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "exam_sessions",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.exam_sessions.user_id.type",
+        "s|colprop|public.exam_sessions.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.exam_sessions",
+        "n|sch|public",
+        "n|col|public.exam_sessions.user_id"
+      ],
+      "sqlHash": "168e42b8a6fda76b"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "organization_admins",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.organization_admins.user_id.type",
+        "s|colprop|public.organization_admins.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.organization_admins",
+        "n|sch|public",
+        "n|col|public.organization_admins.user_id"
+      ],
+      "sqlHash": "8046fb660a4de80c"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "questions",
+        "reviewed_by"
+      ],
+      "writes": [
+        "s|colprop|public.questions.reviewed_by.notNull",
+        "s|colprop|public.questions.reviewed_by.type",
+        "s|colprop|public.questions.reviewed_by.default"
+      ],
+      "reads": [
+        "n|tbl|public.questions",
+        "n|sch|public",
+        "n|col|public.questions.reviewed_by"
+      ],
+      "sqlHash": "ba586a8137245653"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "review_queue",
+        "user_id"
+      ],
+      "writes": [
+        "s|colprop|public.review_queue.user_id.type",
+        "s|colprop|public.review_queue.user_id.default"
+      ],
+      "reads": [
+        "n|tbl|public.review_queue",
+        "n|sch|public",
+        "n|col|public.review_queue.user_id"
+      ],
+      "sqlHash": "ac801f4b78b93c7d"
+    },
+    {
+      "statementType": "drop_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "user_role"
+      ],
+      "writes": [
+        "s|enum|public.user_role",
+        "n|enum|public.user_role",
+        "e|enum|public.user_role",
+        "n|type|public.user_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "drop",
+      "key": "enums\u0000[\"public\",\"user_role\"]"
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"answers\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"bookmarks\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"entitlements\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"error_reports\",\"user_id\"]",
+      "set": {
+        "type": "uuid",
+        "notNull": true
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"exam_sessions\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"organization_admins\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"questions\",\"reviewed_by\"]",
+      "set": {
+        "type": "uuid",
+        "notNull": true
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"review_queue\",\"user_id\"]",
+      "set": {
+        "type": "uuid"
+      }
+    }
+  ]
+}

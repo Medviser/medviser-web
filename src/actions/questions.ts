@@ -1,5 +1,6 @@
 "use server"
 import { deleteQuestion, insertQuestion, updateQuestion } from "@/data/question";
+import { getAdminUser } from "@/lib/auth/admin";
 import { questionSchema } from "@/lib/schemas";
 import type { QuestionFormValues } from "@/lib/types/schema";
 import { revalidatePath } from "next/cache";
@@ -10,6 +11,10 @@ export async function createQuestion(values: QuestionFormValues){
           console.error(validated.error);
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
+     const adminUser = await getAdminUser();
+     if (!adminUser) {
+          return { error: "Այս գործողության համար իրավունք չունեք։" };
+     }
      try {
           await insertQuestion(validated.data);
      } catch {
@@ -29,7 +34,8 @@ export async function editQuestion(id: string, values: QuestionFormValues) {
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     // TODO: Այստեղ միացրու ադմինի իրավունքի սերվերային ստուգումը։
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           await updateQuestion(id, parsed.data);
@@ -46,7 +52,8 @@ export async function removeQuestion(id: string) {
           return { error: "Հարցի ID-ն պարտադիր է։" };
      }
 
-     // TODO: Այստեղ միացրու ադմինի իրավունքի սերվերային ստուգումը։
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           if (!(await deleteQuestion(id))) {

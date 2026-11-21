@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { deleteResource, insertResource, updateResource } from "@/data/resources";
 import { resourceSchema } from "@/lib/schemas";
 import type { ResourceFormValues } from "@/lib/types/schema";
+import { getAdminUser } from "@/lib/auth/admin";
 
 type ResourceResult = { success: true } | { error: string };
 
@@ -15,7 +16,8 @@ export async function createResource(values: ResourceFormValues): Promise<Resour
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           await insertResource(parsed.data);
@@ -38,7 +40,8 @@ export async function editResource(id: string, values: ResourceFormValues): Prom
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           if (!(await updateResource(id, parsed.data))) {
@@ -57,7 +60,8 @@ export async function removeResource(id: string): Promise<ResourceResult> {
           return { error: "Ռեսուրսի ID-ն պարտադիր է։" };
      }
 
-     // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           if (!(await deleteResource(id))) {

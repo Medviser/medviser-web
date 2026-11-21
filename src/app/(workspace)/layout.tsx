@@ -3,8 +3,13 @@ import AppSidebarFooter from "@/components/sidebar/footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppSidebarList from "@/components/sidebar/content";
 import AppSidebarHeader from "@/components/sidebar/header";
+import { getAdminUser } from "@/lib/auth/admin";
+import { redirect } from "next/navigation";
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+     if (!(await getAdminUser())) {
+          redirect("/auth");
+     }
      return (
           <TooltipProvider>
                <SidebarProvider>

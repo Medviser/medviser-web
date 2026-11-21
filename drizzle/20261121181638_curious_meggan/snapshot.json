@@ -1,0 +1,527 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "745d1a30-7def-4475-80a2-70938d1952af",
+  "prevIds": [
+    "ca3b65ab-47cb-4005-bacf-a2a9f9362790"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "user_role"
+      ],
+      "writes": [
+        "s|enum|public.user_role",
+        "n|enum|public.user_role",
+        "e|enum|public.user_role",
+        "n|type|public.user_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "resources"
+      ],
+      "writes": [
+        "s|tbl|public.resources",
+        "n|tbl|public.resources",
+        "e|tbl|public.resources",
+        "n|rel|public.resources",
+        "n|type|public.resources",
+        "n|rel|public.resources_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "users"
+      ],
+      "writes": [
+        "s|tbl|public.users",
+        "n|tbl|public.users",
+        "e|tbl|public.users",
+        "n|rel|public.users",
+        "n|type|public.users"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "answers"
+      ],
+      "writes": [
+        "s|fk|public.answers.answers_user_id_fkey",
+        "n|fk|public.answers.answers_user_id_fkey",
+        "e|fk|public.answers.answers_user_id_fkey",
+        "n|con|public.answers.answers_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.answers",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.answers.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "00b25cd1d8abb7a4"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "bookmarks"
+      ],
+      "writes": [
+        "s|fk|public.bookmarks.bookmarks_user_id_fkey",
+        "n|fk|public.bookmarks.bookmarks_user_id_fkey",
+        "e|fk|public.bookmarks.bookmarks_user_id_fkey",
+        "n|con|public.bookmarks.bookmarks_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.bookmarks.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "83c676b89448386d"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "entitlements"
+      ],
+      "writes": [
+        "s|fk|public.entitlements.entitlements_user_id_fkey",
+        "n|fk|public.entitlements.entitlements_user_id_fkey",
+        "e|fk|public.entitlements.entitlements_user_id_fkey",
+        "n|con|public.entitlements.entitlements_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.entitlements",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.entitlements.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "c3546053b8de2a64"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "error_reports"
+      ],
+      "writes": [
+        "s|fk|public.error_reports.error_reports_user_id_fkey",
+        "n|fk|public.error_reports.error_reports_user_id_fkey",
+        "e|fk|public.error_reports.error_reports_user_id_fkey",
+        "n|con|public.error_reports.error_reports_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.error_reports",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.error_reports.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "8bed1faaaabfc41f"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "exam_sessions"
+      ],
+      "writes": [
+        "s|fk|public.exam_sessions.exam_sessions_user_id_fkey",
+        "n|fk|public.exam_sessions.exam_sessions_user_id_fkey",
+        "e|fk|public.exam_sessions.exam_sessions_user_id_fkey",
+        "n|con|public.exam_sessions.exam_sessions_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.exam_sessions",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.exam_sessions.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "cccf32a669f4ebac"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "organization_admins"
+      ],
+      "writes": [
+        "s|fk|public.organization_admins.organization_admins_user_id_fkey",
+        "n|fk|public.organization_admins.organization_admins_user_id_fkey",
+        "e|fk|public.organization_admins.organization_admins_user_id_fkey",
+        "n|con|public.organization_admins.organization_admins_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.organization_admins",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.organization_admins.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "5183f7679a02a48a"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "questions"
+      ],
+      "writes": [
+        "s|fk|public.questions.questions_reviewed_by_fkey",
+        "n|fk|public.questions.questions_reviewed_by_fkey",
+        "e|fk|public.questions.questions_reviewed_by_fkey",
+        "n|con|public.questions.questions_reviewed_by_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.questions",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.questions.reviewed_by",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "c41c6bb4d4641004"
+    },
+    {
+      "statementType": "recreate_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "review_queue"
+      ],
+      "writes": [
+        "s|fk|public.review_queue.review_queue_user_id_fkey",
+        "n|fk|public.review_queue.review_queue_user_id_fkey",
+        "e|fk|public.review_queue.review_queue_user_id_fkey",
+        "n|con|public.review_queue.review_queue_user_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.review_queue",
+        "n|sch|public",
+        "n|tbl|neon_auth.user",
+        "n|sch|neon_auth",
+        "n|col|public.review_queue.user_id",
+        "n|col|neon_auth.user.id",
+        "e|uniqueness|neon_auth.user.id"
+      ],
+      "sqlHash": "c29834f4ff9374ad"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "resources",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "user_role",
+        "values": [
+          "user",
+          "content_editor",
+          "reviewer",
+          "super_admin"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "id",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "title",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "url",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "description",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "is_published",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "resources",
+        "name": "resources_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "tables\u0000[\"public\",\"users\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"id\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"phone\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"email\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"first_name\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"last_name\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"specialty_id\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"professional_status\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"workplace\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"registry_number\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"hcp_verified\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"organization_id\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"created_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"consent_terms_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"users\",\"consent_marketing\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"users_specialty_id_idx_04170370\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"users_organization_id_idx_1a5cd3f5\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"users\",\"users_specialty_id_fkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"users\",\"users_organization_id_fkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "pks\u0000[\"public\",\"users\",\"users_pkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "uniques\u0000[\"public\",\"users\",\"users_phone_key\"]"
+    },
+    {
+      "op": "drop",
+      "key": "uniques\u0000[\"public\",\"users\",\"users_email_key\"]"
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"answers\",\"answers_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"bookmarks\",\"bookmarks_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"entitlements\",\"entitlements_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"error_reports\",\"error_reports_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"exam_sessions\",\"exam_sessions_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"organization_admins\",\"organization_admins_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"questions\",\"questions_reviewed_by_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "fks\u0000[\"public\",\"review_queue\",\"review_queue_user_id_fkey\"]",
+      "set": {
+        "schemaTo": "neon_auth",
+        "tableTo": "user"
+      }
+    }
+  ]
+}

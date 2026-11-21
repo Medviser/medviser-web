@@ -8,12 +8,10 @@ const sponsorUntilSchema = z.string({ error: "Մուտքագրեք վավերա�
      if (value === "") return null;
      return new Date(value.endsWith("Z") ? value : `${value}Z`);
 });
-const emailSchema = z.email();
-const phonePattern = /^\+?[0-9]{7,15}$/;
 
 export const loginSchema = z.object({
-     identifier: z.string().trim().refine((value) =>emailSchema.safeParse(value).success || phonePattern.test(value),"Մուտքագրեք վավեր էլ․ փոստի հասցե կամ հեռախոսահամար։",),
-     password: z.string().min(1, "Մուտքագրեք գաղտնաբառը։").max(8,"Գաղնաբառը 8 նիշից ավել է"),
+     email: z.email("Մուտքագրեք վավեր էլ․ փոստի հասցե կամ հեռախոսահամար։").trim().max(200, "Էլ․ հասցեն 200 նիշից ավել է").transform(val=>val.toLowerCase()),
+     password: z.string().min(1, "Մուտքագրեք գաղտնաբառը։").min(8,"Գաղնաբառը պետք է ունենա առնվազն 8 նիշ"),
      rememberMe: z.boolean(),
 });
 

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { deleteTopic, insertTopic, updateTopic } from "@/data/topics";
 import { topicSchema } from "@/lib/schemas";
 import type { TopicFormValues } from "@/lib/types/schema";
+import { getAdminUser } from "@/lib/auth/admin";
 
 export async function createTopic(values: TopicFormValues) {
      const parsed = topicSchema.safeParse(values);
@@ -10,7 +11,9 @@ export async function createTopic(values: TopicFormValues) {
           console.error(parsed.error)
           return { error: "Ստուգեք թեմայի անունն ու մասնագիտությունը։" };
      }
-     // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
+     
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           await insertTopic(parsed.data);
@@ -29,7 +32,9 @@ export async function editTopic(id: string, values: TopicFormValues) {
           console.error(parsed.error)
           return { error: "Մուտքագրեք թեմայի անունը։" };
      }
-     // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
+     
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
 
      try {
           const updated = await updateTopic(id, parsed.data.name_hy) 
@@ -44,13 +49,13 @@ export async function editTopic(id: string, values: TopicFormValues) {
 }
 
 export async function removeTopic(id: string) {
+     const adminUser = await getAdminUser();
+     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
      try {
           if (!(await deleteTopic(id))) {
                return { error: "Թեման չի գտնվել։" };
           }
      } catch (error) {
-          // TODO: Այստեղ կանչիր ադմինի իրավունքի սերվերային ստուգումը։
-          // Drizzle-ը PostgreSQL-ի սխալը կարող է պահել `cause`-ում։
           const cause = error instanceof Error ? error.cause ?? error : error;
           if (
                cause &&

@@ -6,7 +6,7 @@ import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLab
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { FcGoogle } from "react-icons/fc";
-import { SiApple } from "react-icons/si";
+import {SiGithub} from "react-icons/si"
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useState, useTransition } from "react";
@@ -15,6 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { LoginFormValues } from "@/lib/types/schema";
 import { loginSchema } from "@/lib/schemas";
 import { Spinner } from "@/components/ui/spinner";
+import { loginAdmin } from "@/actions/auth";
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth/client";
 
 export default function LoginContent(){
      const [shown, setShown] = useState(false)
@@ -22,7 +25,7 @@ export default function LoginContent(){
      const form = useForm<LoginFormValues>({
           resolver: zodResolver(loginSchema),
           defaultValues: {
-               identifier: "",
+               email: "",
                password: "",
                rememberMe: false,
           },
@@ -30,8 +33,19 @@ export default function LoginContent(){
      const { errors } = form.formState;
      const onSubmit = (values: LoginFormValues) => {
           startTransition(async()=>{
-               // TODO: Login Ինչ-որ պրովայդերով
-               console.log(values)
+               const res = await loginAdmin(values);
+               if(res.error) {
+                    toast.error(res.error);
+                    return;
+               }
+          })
+     }
+     const handleOAuthSignin = (provider: "google" | "github") => {
+          startTransition(async() => {
+               await authClient.signIn.social({
+                    provider,
+                    callbackURL: "/"
+               });
           })
      }
      return (
@@ -56,23 +70,24 @@ export default function LoginContent(){
                          <FieldGroup className="gap-5">
                               <Controller
                                    control={form.control}
-                                   name="identifier"
+                                   name="email"
                                    disabled={isSubmitting}
                                    render={({ field, fieldState }) => (
                                         <Field data-invalid={fieldState.invalid}>
-                                             <FieldLabel htmlFor={field.name}>Հեռախոսահամար կամ էլ․ փոստ</FieldLabel>
+                                             <FieldLabel htmlFor={field.name}>էլ․ փոստ</FieldLabel>
                                              <Input
                                                   {...field}
+                                                  type="email"
                                                   id={field.name}
-                                                  autoComplete="username"
+                                                  autoComplete="email"
                                                   autoCapitalize="none"
                                                   spellCheck={false}
-                                                  placeholder="name@example.com կամ +37499123456"
+                                                  placeholder="name@example.com"
                                                   aria-invalid={fieldState.invalid}
-                                                  aria-describedby={fieldState.error ? "identifier-error" : undefined}
+                                                  aria-describedby={fieldState.error ? "email-error" : undefined}
                                              />
                                              {fieldState.error && (
-                                                  <FieldError id="identifier-error" errors={[fieldState.error]} />
+                                                  <FieldError id="email-error" errors={[fieldState.error]} />
                                              )}
                                         </Field>
                                    )}
@@ -129,6 +144,7 @@ export default function LoginContent(){
                                                   onBlur={field.onBlur}
                                                   onCheckedChange={(checked) => field.onChange(checked === true)}
                                                   aria-invalid={fieldState.invalid}
+                                                  disabled={field.disabled}
                                              />
                                              <FieldContent>
                                                   <FieldLabel htmlFor="remember-me">Հիշեք ինձ</FieldLabel>
@@ -146,13 +162,13 @@ export default function LoginContent(){
                               </Field>
                               <FieldSeparator />
                               <Field>
-                                   <Button type="button" variant="outline">
-                                        <FcGoogle />
+                                   <Button type="button" variant="outline" disabled={isSubmitting} onClick={()=>handleOAuthSignin("google")}>
+                                        <FcGoogle/>
                                         Շարունակեք Google-ով
                                    </Button>
-                                   <Button type="button" variant="outline">
-                                        <SiApple />
-                                        Շարունակեք Apple-ով
+                                   <Button type="button" variant="outline" disabled={isSubmitting} onClick={()=>handleOAuthSignin("github")}>
+                                        <SiGithub/>
+                                        Շարունակեք GitHub-ով
                                    </Button>
                               </Field>
                          </FieldGroup>

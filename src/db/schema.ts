@@ -8,11 +8,12 @@ import {
   index,
   integer,
   json,
-  pgEnum,
+  pgSchema,
   pgTable,
   primaryKey,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 export const questionStatuses = [
@@ -34,13 +35,6 @@ export type QuestionSource = { title: string; url: string };
 
 const cuidPrimaryKey = () => text().primaryKey().$defaultFn(createId);
 const dateTime = () => timestamp({ withTimezone: true, precision: 3, mode: "date" });
-
-export const userRole = pgEnum("user_role", [
-  "user",
-  "content_editor",
-  "reviewer",
-  "super_admin",
-]);
 
 export const sponsors = pgTable("sponsors", {
   id: cuidPrimaryKey(),
@@ -115,40 +109,9 @@ export const topics = pgTable(
   ],
 );
 
-export const users = pgTable(
-  "users",
-  {
-    id: cuidPrimaryKey(),
-    phone: text().unique("users_phone_key"),
-    email: text().unique("users_email_key"),
-    first_name: text().notNull(),
-    last_name: text().notNull(),
-    specialty_id: text().notNull(),
-    professional_status: text().notNull(),
-    workplace: text(),
-    registry_number: text(),
-    hcp_verified: text({ enum: hcpVerificationStatuses }).notNull().default("none"),
-    organization_id: text(),
-    created_at: dateTime().notNull().defaultNow(),
-    consent_terms_at: dateTime().notNull(),
-    consent_marketing: boolean().notNull().default(false),
-    role: userRole("role").notNull().default("user"),
-  },
-  (table) => [
-    foreignKey({
-      name: "users_specialty_id_fkey",
-      columns: [table.specialty_id],
-      foreignColumns: [specialties.id],
-    }),
-    foreignKey({
-      name: "users_organization_id_fkey",
-      columns: [table.organization_id],
-      foreignColumns: [organizations.id],
-    }),
-    index("users_specialty_id_idx_04170370").on(table.specialty_id),
-    index("users_organization_id_idx_1a5cd3f5").on(table.organization_id),
-  ],
-);
+const neonAuthUsers = pgSchema("neon_auth").table("user", {
+  id: uuid("id").primaryKey(),
+});
 
 export const questions = pgTable(
   "questions",
@@ -171,7 +134,7 @@ export const questions = pgTable(
       .notNull()
       .$defaultFn(() => new Date())
       .$onUpdateFn(() => new Date()),
-    reviewed_by: text(),
+    reviewed_by: uuid("reviewed_by").notNull(),
     reviewed_at: dateTime(),
   },
   (table) => [
@@ -188,7 +151,7 @@ export const questions = pgTable(
     foreignKey({
       name: "questions_reviewed_by_fkey",
       columns: [table.reviewed_by],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     index("questions_specialty_id_idx_04170370").on(table.specialty_id),
     index("questions_specialty_id_status_number_idx_48ef38b1").on(table.specialty_id, table.status, table.number),
@@ -203,7 +166,7 @@ export const entitlements = pgTable(
   "entitlements",
   {
     id: cuidPrimaryKey(),
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
     // A null specialty_id grants access to all specialties.
     specialty_id: text(),
     source: text({ enum: entitlementSources }).notNull(),
@@ -215,7 +178,7 @@ export const entitlements = pgTable(
     foreignKey({
       name: "entitlements_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "entitlements_specialty_id_fkey",
@@ -233,7 +196,7 @@ export const examSessions = pgTable(
   "exam_sessions",
   {
     id: cuidPrimaryKey(),
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
     specialty_id: text().notNull(),
     question_ids: text().array().notNull().default(sql`'{}'::text[]`),
     started_at: dateTime().notNull().defaultNow(),
@@ -248,7 +211,7 @@ export const examSessions = pgTable(
     foreignKey({
       name: "exam_sessions_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "exam_sessions_specialty_id_fkey",
@@ -266,7 +229,7 @@ export const answers = pgTable(
   "answers",
   {
     id: cuidPrimaryKey(),
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
     question_id: text().notNull(),
     question_version: integer().notNull(),
     selected_option_id: text().notNull(),
@@ -279,7 +242,7 @@ export const answers = pgTable(
     foreignKey({
       name: "answers_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "answers_question_id_fkey",
@@ -302,7 +265,7 @@ export const answers = pgTable(
 export const reviewQueue = pgTable(
   "review_queue",
   {
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
     question_id: text().notNull(),
     stage: integer().notNull().default(0),
     next_review_at: dateTime().notNull(),
@@ -312,7 +275,7 @@ export const reviewQueue = pgTable(
     foreignKey({
       name: "review_queue_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "review_queue_question_id_fkey",
@@ -328,7 +291,7 @@ export const reviewQueue = pgTable(
 export const bookmarks = pgTable(
   "bookmarks",
   {
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
     question_id: text().notNull(),
     created_at: dateTime().notNull().defaultNow(),
   },
@@ -337,7 +300,7 @@ export const bookmarks = pgTable(
     foreignKey({
       name: "bookmarks_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "bookmarks_question_id_fkey",
@@ -354,7 +317,7 @@ export const errorReports = pgTable(
   "error_reports",
   {
     id: cuidPrimaryKey(),
-    user_id: text(),
+    user_id: uuid("user_id").notNull(),
     question_id: text().notNull(),
     type: text().notNull(),
     text: text().notNull(),
@@ -366,7 +329,7 @@ export const errorReports = pgTable(
     foreignKey({
       name: "error_reports_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     foreignKey({
       name: "error_reports_question_id_fkey",
@@ -485,7 +448,7 @@ export const organizationAdmins = pgTable(
   "organization_admins",
   {
     organization_id: text().notNull(),
-    user_id: text().notNull(),
+    user_id: uuid("user_id").notNull(),
   },
   (table) => [
     primaryKey({ name: "organization_admins_pkey", columns: [table.organization_id, table.user_id] }),
@@ -497,7 +460,7 @@ export const organizationAdmins = pgTable(
     foreignKey({
       name: "organization_admins_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [users.id],
+      foreignColumns: [neonAuthUsers.id],
     }),
     index("organization_admins_organization_id_idx_1a5cd3f5").on(table.organization_id),
     index("organization_admins_user_id_idx_6c952402").on(table.user_id),
