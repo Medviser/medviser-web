@@ -134,7 +134,7 @@ export const questions = pgTable(
       .notNull()
       .$defaultFn(() => new Date())
       .$onUpdateFn(() => new Date()),
-    reviewed_by: uuid("reviewed_by").notNull(),
+    reviewed_by: uuid("reviewed_by"),
     reviewed_at: dateTime(),
   },
   (table) => [
