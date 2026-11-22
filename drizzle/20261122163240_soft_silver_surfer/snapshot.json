@@ -1,0 +1,593 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "b5db17ea-9bdd-4d7a-a61b-939340dc2278",
+  "prevIds": [
+    "33724fa1-05ce-4488-9266-c1b3e3fe5d87"
+  ],
+  "footprints": [
+    {
+      "statementType": "drop_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_user_id_idx_6c952402"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_user_id_idx_6c952402",
+        "n|idx|public.bookmarks_user_id_idx_6c952402",
+        "e|idx|public.bookmarks_user_id_idx_6c952402",
+        "n|rel|public.bookmarks_user_id_idx_6c952402"
+      ],
+      "reads": [
+        "e|tbl|public.bookmarks",
+        "n|sch|public",
+        "e|col|public.bookmarks.user_id"
+      ],
+      "sharedWrites": []
+    },
+    {
+      "statementType": "drop_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_user_id_created_at_idx_b562028f"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_user_id_created_at_idx_b562028f",
+        "n|idx|public.bookmarks_user_id_created_at_idx_b562028f",
+        "e|idx|public.bookmarks_user_id_created_at_idx_b562028f",
+        "n|rel|public.bookmarks_user_id_created_at_idx_b562028f"
+      ],
+      "reads": [
+        "e|tbl|public.bookmarks",
+        "n|sch|public",
+        "e|col|public.bookmarks.user_id",
+        "e|col|public.bookmarks.created_at"
+      ],
+      "sharedWrites": []
+    },
+    {
+      "statementType": "drop_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_question_id_idx_fcfb223c"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_question_id_idx_fcfb223c",
+        "n|idx|public.bookmarks_question_id_idx_fcfb223c",
+        "e|idx|public.bookmarks_question_id_idx_fcfb223c",
+        "n|rel|public.bookmarks_question_id_idx_fcfb223c"
+      ],
+      "reads": [
+        "e|tbl|public.bookmarks",
+        "n|sch|public",
+        "e|col|public.bookmarks.question_id"
+      ],
+      "sharedWrites": []
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "bookmarks",
+        "id"
+      ],
+      "writes": [
+        "s|col|public.bookmarks.id",
+        "n|col|public.bookmarks.id",
+        "e|col|public.bookmarks.id"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "consentTermsAt"
+      ],
+      "writes": [
+        "s|col|public.user.consentTermsAt",
+        "n|col|public.user.consentTermsAt",
+        "e|col|public.user.consentTermsAt"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "consent_terms_at"
+      ],
+      "writes": [
+        "s|col|public.user.consent_terms_at",
+        "n|col|public.user.consent_terms_at",
+        "e|col|public.user.consent_terms_at"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "alter_pk",
+      "statementTarget": [
+        "table",
+        "public",
+        "bookmarks"
+      ],
+      "writes": [
+        "s|pk|public.bookmarks"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.id"
+      ],
+      "sharedWrites": [
+        "e|uniqueness|public.bookmarks.question_id.user_id"
+      ],
+      "sqlHash": "63b2cefeea517f01"
+    },
+    {
+      "statementType": "add_unique",
+      "statementTarget": [
+        "table",
+        "public",
+        "bookmarks"
+      ],
+      "writes": [
+        "s|uq|public.bookmarks.bookmarks_user_question_unique",
+        "n|uq|public.bookmarks.bookmarks_user_question_unique",
+        "e|uq|public.bookmarks.bookmarks_user_question_unique",
+        "n|con|public.bookmarks.bookmarks_user_question_unique",
+        "n|rel|public.bookmarks_user_question_unique"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.user_id",
+        "n|col|public.bookmarks.question_id"
+      ]
+    },
+    {
+      "statementType": "add_unique",
+      "statementTarget": [
+        "table",
+        "public",
+        "entitlements"
+      ],
+      "writes": [
+        "s|uq|public.entitlements.entitlements_user_id_key",
+        "n|uq|public.entitlements.entitlements_user_id_key",
+        "e|uq|public.entitlements.entitlements_user_id_key",
+        "n|con|public.entitlements.entitlements_user_id_key",
+        "n|rel|public.entitlements_user_id_key"
+      ],
+      "reads": [
+        "n|tbl|public.entitlements",
+        "n|sch|public",
+        "n|col|public.entitlements.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_user_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_user_id_idx",
+        "n|idx|public.bookmarks_user_id_idx",
+        "e|idx|public.bookmarks_user_id_idx",
+        "n|rel|public.bookmarks_user_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_user_id_created_at_idx"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_user_id_created_at_idx",
+        "n|idx|public.bookmarks_user_id_created_at_idx",
+        "e|idx|public.bookmarks_user_id_created_at_idx",
+        "n|rel|public.bookmarks_user_id_created_at_idx"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.user_id",
+        "n|col|public.bookmarks.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "bookmarks",
+        "bookmarks_question_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.bookmarks_question_id_idx",
+        "n|idx|public.bookmarks_question_id_idx",
+        "e|idx|public.bookmarks_question_id_idx",
+        "n|rel|public.bookmarks_question_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.bookmarks",
+        "n|sch|public",
+        "n|col|public.bookmarks.question_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "user",
+        "users_specialty_id_idx_04170370"
+      ],
+      "writes": [
+        "s|idx|public.users_specialty_id_idx_04170370",
+        "n|idx|public.users_specialty_id_idx_04170370",
+        "e|idx|public.users_specialty_id_idx_04170370",
+        "n|rel|public.users_specialty_id_idx_04170370"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.specialty_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "user",
+        "users_organization_id_idx_1a5cd3f5"
+      ],
+      "writes": [
+        "s|idx|public.users_organization_id_idx_1a5cd3f5",
+        "n|idx|public.users_organization_id_idx_1a5cd3f5",
+        "e|idx|public.users_organization_id_idx_1a5cd3f5",
+        "n|rel|public.users_organization_id_idx_1a5cd3f5"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.organization_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "user"
+      ],
+      "writes": [
+        "s|fk|public.user.users_specialty_id_fkey",
+        "n|fk|public.user.users_specialty_id_fkey",
+        "e|fk|public.user.users_specialty_id_fkey",
+        "n|con|public.user.users_specialty_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|tbl|public.specialties",
+        "n|sch|public",
+        "n|col|public.user.specialty_id",
+        "n|col|public.specialties.id",
+        "e|uniqueness|public.specialties.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "user"
+      ],
+      "writes": [
+        "s|fk|public.user.users_organization_id_fkey",
+        "n|fk|public.user.users_organization_id_fkey",
+        "e|fk|public.user.users_organization_id_fkey",
+        "n|con|public.user.users_organization_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|tbl|public.organizations",
+        "n|sch|public",
+        "n|col|public.user.organization_id",
+        "n|col|public.organizations.id",
+        "e|uniqueness|public.organizations.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "bookmarks",
+        "name": "id",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "user",
+        "name": "consentTermsAt",
+        "type": "timestamp(3) with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "bookmarks",
+        "name": "bookmarks_user_id_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "user_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "bookmarks",
+        "name": "bookmarks_user_id_created_at_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "user_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "created_at",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "bookmarks",
+        "name": "bookmarks_question_id_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "question_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "user",
+        "name": "users_specialty_id_idx_04170370",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "specialty_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "user",
+        "name": "users_organization_id_idx_1a5cd3f5",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "organization_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "user",
+        "name": "users_specialty_id_fkey",
+        "nameExplicit": true,
+        "columns": [
+          "specialty_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "specialties",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "user",
+        "name": "users_organization_id_fkey",
+        "nameExplicit": true,
+        "columns": [
+          "organization_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "organizations",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "bookmarks",
+        "name": "bookmarks_user_question_unique",
+        "nameExplicit": true,
+        "columns": [
+          "user_id",
+          "question_id"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "entitlements",
+        "name": "entitlements_user_id_key",
+        "nameExplicit": false,
+        "columns": [
+          "user_id"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"user\",\"consent_terms_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"bookmarks_user_id_idx_6c952402\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"bookmarks_user_id_created_at_idx_b562028f\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"bookmarks_question_id_idx_fcfb223c\"]"
+    },
+    {
+      "op": "alter",
+      "key": "pks\u0000[\"public\",\"bookmarks\",\"bookmarks_pkey\"]",
+      "set": {
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false
+      }
+    }
+  ]
+}

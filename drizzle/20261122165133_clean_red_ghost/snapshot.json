@@ -1,0 +1,288 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "6f467439-e490-4bc1-8576-c511ae56a568",
+  "prevIds": [
+    "b5db17ea-9bdd-4d7a-a61b-939340dc2278"
+  ],
+  "footprints": [
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "user"
+      ],
+      "writes": [
+        "s|fk|public.user.users_specialty_id_fkey",
+        "n|fk|public.user.users_specialty_id_fkey",
+        "e|fk|public.user.users_specialty_id_fkey",
+        "n|con|public.user.users_specialty_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "e|col|public.user.specialty_id"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "user"
+      ],
+      "writes": [
+        "s|fk|public.user.users_organization_id_fkey",
+        "n|fk|public.user.users_organization_id_fkey",
+        "e|fk|public.user.users_organization_id_fkey",
+        "n|con|public.user.users_organization_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "e|col|public.user.organization_id"
+      ]
+    },
+    {
+      "statementType": "rename_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "consentTermsAt"
+      ],
+      "writes": [
+        "s|col|public.user.consentTermsAt",
+        "n|col|public.user.consentTermsAt",
+        "s|col|public.user.consent_terms_at",
+        "n|col|public.user.consent_terms_at"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "user",
+        "users_specialty_id_idx_04170370"
+      ],
+      "writes": [
+        "s|idx|public.users_specialty_id_idx_04170370",
+        "n|idx|public.users_specialty_id_idx_04170370",
+        "e|idx|public.users_specialty_id_idx_04170370",
+        "n|rel|public.users_specialty_id_idx_04170370"
+      ],
+      "reads": [
+        "e|tbl|public.user",
+        "n|sch|public",
+        "e|col|public.user.specialty_id"
+      ],
+      "sharedWrites": []
+    },
+    {
+      "statementType": "drop_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "user",
+        "users_organization_id_idx_1a5cd3f5"
+      ],
+      "writes": [
+        "s|idx|public.users_organization_id_idx_1a5cd3f5",
+        "n|idx|public.users_organization_id_idx_1a5cd3f5",
+        "e|idx|public.users_organization_id_idx_1a5cd3f5",
+        "n|rel|public.users_organization_id_idx_1a5cd3f5"
+      ],
+      "reads": [
+        "e|tbl|public.user",
+        "n|sch|public",
+        "e|col|public.user.organization_id"
+      ],
+      "sharedWrites": []
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "specialty_id"
+      ],
+      "writes": [
+        "s|colprop|public.user.specialty_id.notNull"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.specialty_id"
+      ],
+      "sqlHash": "b3019dc800a9ae89"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "professional_status"
+      ],
+      "writes": [
+        "s|colprop|public.user.professional_status.notNull"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.professional_status"
+      ],
+      "sqlHash": "c6114dc99d3db3ca"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "hcp_verified"
+      ],
+      "writes": [
+        "s|colprop|public.user.hcp_verified.notNull"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.hcp_verified"
+      ],
+      "sqlHash": "52a1ec0da76bfe8b"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "role"
+      ],
+      "writes": [
+        "s|colprop|public.user.role.notNull",
+        "s|colprop|public.user.role.type",
+        "s|colprop|public.user.role.default"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.role"
+      ],
+      "sqlHash": "579fcbb84c8db476"
+    },
+    {
+      "statementType": "alter_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "user",
+        "consent_terms_at"
+      ],
+      "writes": [
+        "s|colprop|public.user.consent_terms_at.notNull",
+        "s|colprop|public.user.consent_terms_at.type",
+        "s|colprop|public.user.consent_terms_at.default"
+      ],
+      "reads": [
+        "n|tbl|public.user",
+        "n|sch|public",
+        "n|col|public.user.consent_terms_at"
+      ],
+      "sqlHash": "5700265552cac6ca"
+    },
+    {
+      "statementType": "drop_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "user_role"
+      ],
+      "writes": [
+        "s|enum|public.user_role",
+        "n|enum|public.user_role",
+        "e|enum|public.user_role",
+        "n|type|public.user_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "rename",
+      "key": "columns\u0000[\"public\",\"user\",\"consentTermsAt\"]",
+      "set": {
+        "name": "consent_terms_at"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "enums\u0000[\"public\",\"user_role\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"users_specialty_id_idx_04170370\"]"
+    },
+    {
+      "op": "drop",
+      "key": "indexes\u0000[\"public\",\"users_organization_id_idx_1a5cd3f5\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"user\",\"users_specialty_id_fkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"user\",\"users_organization_id_fkey\"]"
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"user\",\"specialty_id\"]",
+      "set": {
+        "notNull": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"user\",\"professional_status\"]",
+      "set": {
+        "notNull": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"user\",\"hcp_verified\"]",
+      "set": {
+        "notNull": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"user\",\"role\"]",
+      "set": {
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false
+      }
+    },
+    {
+      "op": "alter",
+      "key": "columns\u0000[\"public\",\"user\",\"consent_terms_at\"]",
+      "set": {
+        "type": "timestamp",
+        "notNull": false
+      }
+    }
+  ]
+}

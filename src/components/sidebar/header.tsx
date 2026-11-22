@@ -8,7 +8,7 @@ export default function AppSidebarHeader(){
      const theme = useCurrentTheme();
      return (
           <SidebarHeader className="items-center gap-2">
-               <Link href="/" aria-label="Medviser Admin">
+               <Link href="/admin" aria-label="Medviser Admin">
                     <Image
                          src={theme==="light" ? "/logomark.png" : "/logomark-white.png"}
                          alt="Medviser"

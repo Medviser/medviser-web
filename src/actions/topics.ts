@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { deleteTopic, insertTopic, updateTopic } from "@/data/topics";
-import { topicSchema } from "@/lib/schemas";
+import { topicSchema } from "@/lib/schemas/index";
 import type { TopicFormValues } from "@/lib/types/schema";
 import { getAdminUser } from "@/lib/auth/admin";
 
@@ -21,8 +21,8 @@ export async function createTopic(values: TopicFormValues) {
           return { error: "Չհաջողվեց ստեղծել թեման։" };
      }
 
-     revalidatePath("/topics");
-     revalidatePath("/questions/editor");
+     revalidatePath("/admin/topics");
+     revalidatePath("/admin/questions/editor");
      return { success: true };
 }
 
@@ -43,8 +43,8 @@ export async function editTopic(id: string, values: TopicFormValues) {
           return { error: "Չհաջողվեց պահպանել թեման։" };
      }
 
-     revalidatePath("/topics");
-     revalidatePath("/questions/editor");
+     revalidatePath("/admin/topics");
+     revalidatePath("/admin/questions/editor");
      return { success: true };
 }
 
@@ -67,7 +67,7 @@ export async function removeTopic(id: string) {
           }
           return { error: "Չհաջողվեց ջնջել թեման։" };
      }
-     revalidatePath("/topics");
-     revalidatePath("/questions/editor");
+     revalidatePath("/admin/topics");
+     revalidatePath("/admin/questions/editor");
      return { success: true };
 }

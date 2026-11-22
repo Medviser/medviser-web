@@ -3,7 +3,7 @@
 
 import { revalidatePath } from "next/cache";
 import { deleteResource, insertResource, updateResource } from "@/data/resources";
-import { resourceSchema } from "@/lib/schemas";
+import { resourceSchema } from "@/lib/schemas/index";
 import type { ResourceFormValues } from "@/lib/types/schema";
 import { getAdminUser } from "@/lib/auth/admin";
 
@@ -25,7 +25,7 @@ export async function createResource(values: ResourceFormValues): Promise<Resour
           return { error: "Չհաջողվեց ստեղծել ռեսուրսը։" };
      }
 
-     revalidatePath("/resources");
+     revalidatePath("/admin/resources");
      return { success: true };
 }
 
@@ -51,7 +51,7 @@ export async function editResource(id: string, values: ResourceFormValues): Prom
           return { error: "Չհաջողվեց պահպանել ռեսուրսը։" };
      }
 
-     revalidatePath("/resources");
+     revalidatePath("/admin/resources");
      return { success: true };
 }
 
@@ -71,6 +71,6 @@ export async function removeResource(id: string): Promise<ResourceResult> {
           return { error: "Չհաջողվեց ջնջել ռեսուրսը։" };
      }
 
-     revalidatePath("/resources");
+     revalidatePath("/admin/resources");
      return { success: true };
 }

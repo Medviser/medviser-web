@@ -8,7 +8,6 @@ import {
   index,
   integer,
   json,
-  pgEnum,
   pgTable,
   primaryKey,
   text,
@@ -17,22 +16,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { randomUUID } from "node:crypto";
 
-export const userRole = pgEnum("user_role", [
-  "user",
-  "content_editor",
-  "reviewer",
-  "super_admin",
-]);
-
-export const questionStatuses = [
-  "draft",
-  "in_review",
-  "needs_check",
-  "published",
-  "archived",
-] as const;
-
-export const hcpVerificationStatuses = ["none", "self_declared", "verified"] as const;
+export const questionStatuses = ["draft","in_review","needs_check","published","archived"] as const;
 export const entitlementSources = ["purchase", "code", "corporate", "admin"] as const;
 export const answerModes = ["practice", "exam", "daily", "review"] as const;
 export const errorReportStatuses = ["new", "accepted", "rejected", "fixed"] as const;
@@ -41,7 +25,7 @@ export const codeBatchTypes = ["single", "multi"] as const;
 export type QuestionOption = { id: string; text: string };
 export type QuestionSource = { title: string; url: string };
 
-export const dateTime = () => timestamp({ withTimezone: true, precision: 3, mode: "date" });
+const dateTime = () => timestamp({ withTimezone: true, precision: 3, mode: "date" });
 
 export const sponsors = pgTable("sponsors", {
   id: text("id").primaryKey().$defaultFn(() => randomUUID()),
@@ -155,7 +139,7 @@ export const questions = pgTable(
       name: "questions_reviewed_by_fkey",
       columns: [table.reviewed_by],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     index("questions_specialty_id_idx_04170370").on(table.specialty_id),
     index("questions_specialty_id_status_number_idx_48ef38b1").on(table.specialty_id, table.status, table.number),
     index("questions_section_id_idx_13db6de7").on(table.section_id),
@@ -182,7 +166,7 @@ export const entitlements = pgTable(
       name: "entitlements_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "entitlements_specialty_id_fkey",
       columns: [table.specialty_id],
@@ -215,7 +199,7 @@ export const examSessions = pgTable(
       name: "exam_sessions_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "exam_sessions_specialty_id_fkey",
       columns: [table.specialty_id],
@@ -246,7 +230,7 @@ export const answers = pgTable(
       name: "answers_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "answers_question_id_fkey",
       columns: [table.question_id],
@@ -279,7 +263,7 @@ export const reviewQueue = pgTable(
       name: "review_queue_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "review_queue_question_id_fkey",
       columns: [table.question_id],
@@ -304,7 +288,7 @@ export const bookmarks = pgTable(
       name: "bookmarks_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "bookmarks_question_id_fkey",
       columns: [table.question_id],
@@ -340,7 +324,7 @@ export const errorReports = pgTable(
       name: "error_reports_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     foreignKey({
       name: "error_reports_question_id_fkey",
       columns: [table.question_id],
@@ -471,7 +455,7 @@ export const organizationAdmins = pgTable(
       name: "organization_admins_user_id_fkey",
       columns: [table.user_id],
       foreignColumns: [user.id],
-    }),
+    }).onDelete("cascade"),
     index("organization_admins_organization_id_idx_1a5cd3f5").on(table.organization_id),
     index("organization_admins_user_id_idx_6c952402").on(table.user_id),
   ],

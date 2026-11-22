@@ -1,7 +1,7 @@
 "use server"
 import { deleteSpecialty, insertSpecialty, updateSpecialty } from "@/data/specialties";
 import { getAdminUser } from "@/lib/auth/admin";
-import { specialtyDataSchema } from "@/lib/schemas";
+import { specialtyDataSchema } from "@/lib/schemas/index";
 import type { SpecialtyFormData } from "@/lib/types/schema";
 import { revalidatePath } from "next/cache";
 
@@ -21,7 +21,7 @@ export async function createSpecialty(values: SpecialtyFormData){
           return { error: "Չհաջողվեց պահպանել մասնագիտությունը։ Կրկին փորձեք։" };
      }
 
-     revalidatePath("/specialties");
+     revalidatePath("/admin/specialties");
      return { success: true };
 }
 export async function editSpecialty(id: string, values: SpecialtyFormData){
@@ -43,7 +43,7 @@ export async function editSpecialty(id: string, values: SpecialtyFormData){
           return { error: "Չհաջողվեց պահպանել մասնագիտությունը։ Կրկին փորձեք։" };
      }
 
-     revalidatePath("/specialties");
+     revalidatePath("/admin/specialties");
      return { success: true };
 }
 export async function removeSpecialty(id: string) {
@@ -60,6 +60,6 @@ export async function removeSpecialty(id: string) {
      } catch {
           return { error: "Չհաջողվեց ջնջել մասնագիտությունը։ Կրկին փորձեք։" };
      }
-     revalidatePath("/specialties");
+     revalidatePath("/admin/specialties");
      return { success: true };
 }

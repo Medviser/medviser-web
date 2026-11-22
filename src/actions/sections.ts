@@ -2,7 +2,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { deleteSection, insertSection, updateSection } from "@/data/sections";
-import { sectionSchema } from "@/lib/schemas";
+import { sectionSchema } from "@/lib/schemas/index";
 import type { SectionFormValues } from "@/lib/types/schema";
 import { getAdminUser } from "@/lib/auth/admin";
 
@@ -29,7 +29,7 @@ async function saveSection(values: SectionFormValues, id?: string): Promise<{
           return { error: "Չհաջողվեց պահպանել բաժինը։" };
      }
 
-     revalidatePath("/sections");
+     revalidatePath("/admin/sections");
      return { success: true };
 }
 
@@ -54,6 +54,6 @@ export async function removeSection(id: string) {
           return { error: "Չհաջողվեց ջնջել բաժինը։ Հնարավոր է՝ այն հարցեր ունի։" };
      }
 
-     revalidatePath("/sections");
+     revalidatePath("/admin/sections");
      return { success: true };
 }

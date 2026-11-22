@@ -1,6 +1,4 @@
-import { pgTable, text, timestamp, boolean, index, foreignKey } from "drizzle-orm/pg-core";
-import { dateTime, hcpVerificationStatuses, organizations, specialties, userRole } from "./schema";
-import { relations } from "drizzle-orm/_relations";
+import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -9,30 +7,24 @@ export const user = pgTable("user", {
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => /* @__PURE__ */ new Date()).notNull(),
-  specialty_id: text().notNull(),
-  professional_status: text().notNull(),
-  workplace: text(),
-  registry_number: text(),
-  hcp_verified: text({ enum: hcpVerificationStatuses }).notNull().default("none"),
-  organization_id: text(),
-  consentTermsAt: dateTime().notNull(),
-  consent_marketing: boolean().notNull().default(false),
-  role: userRole("role").notNull().default("user"),
-}, table => [
-  foreignKey({
-    name: "users_specialty_id_fkey",
-    columns: [table.specialty_id],
-    foreignColumns: [specialties.id],
-  }),
-  foreignKey({
-    name: "users_organization_id_fkey",
-    columns: [table.organization_id],
-    foreignColumns: [organizations.id],
-  }),
-  index("users_specialty_id_idx_04170370").on(table.specialty_id),
-  index("users_organization_id_idx_1a5cd3f5").on(table.organization_id),
-]);
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  role: text("role", {
+    enum: ["user", "content_editor", "reviewer", "admin"],
+  }).default("user"),
+  specialtyId: text("specialty_id"),
+  professionalStatus: text("professional_status"),
+  workplace: text("workplace"),
+  hcpVerified: text("hcp_verified", {
+    enum: ["none", "self_declared", "verified"],
+  }).default("none"),
+  organizationId: text("organization_id"),
+  consentTermsAt: timestamp("consent_terms_at"),
+  consentMarketing: boolean("consent_marketing").default(false).notNull(),
+  registryNumber: text("registry_number"),
+});
 
 export const session = pgTable(
   "session",
@@ -92,22 +84,3 @@ export const verification = pgTable(
   },
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
-
-export const userRelations = relations(user, ({ many }) => ({
-  sessions: many(session),
-  accounts: many(account),
-}));
-
-export const sessionRelations = relations(session, ({ one }) => ({
-  user: one(user, {
-    fields: [session.userId],
-    references: [user.id],
-  }),
-}));
-
-export const accountRelations = relations(account, ({ one }) => ({
-  user: one(user, {
-    fields: [account.userId],
-    references: [user.id],
-  }),
-}));

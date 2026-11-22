@@ -1,21 +1,17 @@
-// src/proxy.ts (or middleware.ts in Next.js 15 and earlier)
-import { auth } from "@/lib/auth/server";
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
-const authMiddleware = auth.middleware({
-  loginUrl: "/auth/",
-});
-
-export default function proxy(request: NextRequest) {
-  // Skip auth middleware on Server Actions so they don't get treated as signed-out
-  if (request.headers.has("Next-Action")) {
-    return;
+export async function proxy(request: NextRequest) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  if(!session) {
+    return NextResponse.redirect(new URL("/auth", request.url));
   }
-  return authMiddleware(request);
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/((?!auth(?:/|$)|api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/admin"],
 };

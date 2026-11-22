@@ -1,7 +1,7 @@
 "use server"
 import { deleteQuestion, insertQuestion, updateQuestion } from "@/data/question";
 import { getAdminUser } from "@/lib/auth/admin";
-import { questionSchema } from "@/lib/schemas";
+import { questionSchema } from "@/lib/schemas/index";
 import type { QuestionFormValues } from "@/lib/types/schema";
 import { revalidatePath } from "next/cache";
 
@@ -20,7 +20,7 @@ export async function createQuestion(values: QuestionFormValues){
      } catch {
           return { error: "Չհաջողվեց պահպանել հարցը։ Կրկին փորձեք։" };
      }
-     revalidatePath("/questions");
+     revalidatePath("/admin/questions");
      return { success: true };
 }
 export async function editQuestion(id: string, values: QuestionFormValues) {
@@ -43,7 +43,7 @@ export async function editQuestion(id: string, values: QuestionFormValues) {
           return { error: "Չհաջողվեց պահպանել հարցը։" };
      }
 
-     revalidatePath("/questions");
+     revalidatePath("/admin/questions");
      return { success: true };
 }
 
@@ -63,6 +63,6 @@ export async function removeQuestion(id: string) {
           return { error: "Չհաջողվեց ջնջել հարցը։ Հնարավոր է՝ այն արդեն օգտագործվում է։" };
      }
 
-     revalidatePath("/questions");
+     revalidatePath("/admin/questions");
      return { success: true };
 }

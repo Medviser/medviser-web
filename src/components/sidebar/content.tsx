@@ -28,32 +28,32 @@ const navigationGroups = [
           items: [
                {
                     title: "Գլխավոր",
-                    href: "/",
+                    href: "/admin",
                     icon: LayoutDashboard,
                },
                {
                     title: "Մասնագիտություններ",
-                    href: "/specialties",
+                    href: "/admin/specialties",
                     icon: FolderTree,
                },
                {
                     title: "Բաժիններ",
-                    href: "/sections",
+                    href: "/admin/sections",
                     icon: TableOfContents
                },
                {
                     title: "Թեմաներ",
-                    href: "/topics",
+                    href: "/admin/topics",
                     icon: Tags,
                },
                {
                     title: "Հարցեր",
-                    href: "/questions",
+                    href: "/admin/questions",
                     icon: ClipboardList,
                },
                {
                     title: "Ռեսուրսներ",
-                    href: "/resources",
+                    href: "/admin/resources",
                     icon: BookOpen,
                },
           ],
@@ -63,12 +63,12 @@ const navigationGroups = [
           items: [
                {
                     title: "Օգտատերեր",
-                    href: "/users",
+                    href: "/admin/users",
                     icon: Users,
                },
                {
-                    title: "Սխալների հաղորդումներ",
-                    href: "/reports",
+                    title: "Սխալների զեկույցներ",
+                    href: "/admin/reports",
                     icon: Flag,
                },
           ],
@@ -87,7 +87,7 @@ export default function AppSidebarList(){
                          <SidebarGroupContent>
                               <SidebarMenu>
                                    {group.items.map((item) => {
-                                        const matchesPath = pathName === item.href || (item.href !== "/" && pathName.startsWith(`${item.href}/`));
+                                        const matchesPath = pathName === item.href || (item.href !== "/admin" && pathName.startsWith(`${item.href}/`));
                                         return (
                                              <SidebarMenuItem key={item.href}>
                                                   <SidebarMenuButton
