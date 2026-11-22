@@ -1,4 +1,4 @@
-import { createId } from "@paralleldrive/cuid2";
+import { user } from "./auth-schema";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -8,13 +8,21 @@ import {
   index,
   integer,
   json,
-  pgSchema,
+  pgEnum,
   pgTable,
   primaryKey,
   text,
   timestamp,
-  uuid,
+  unique,
 } from "drizzle-orm/pg-core";
+import { randomUUID } from "node:crypto";
+
+export const userRole = pgEnum("user_role", [
+  "user",
+  "content_editor",
+  "reviewer",
+  "super_admin",
+]);
 
 export const questionStatuses = [
   "draft",
@@ -33,11 +41,10 @@ export const codeBatchTypes = ["single", "multi"] as const;
 export type QuestionOption = { id: string; text: string };
 export type QuestionSource = { title: string; url: string };
 
-const cuidPrimaryKey = () => text().primaryKey().$defaultFn(createId);
-const dateTime = () => timestamp({ withTimezone: true, precision: 3, mode: "date" });
+export const dateTime = () => timestamp({ withTimezone: true, precision: 3, mode: "date" });
 
 export const sponsors = pgTable("sponsors", {
-  id: cuidPrimaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => randomUUID()),
   name: text().notNull(),
   logo_url: text().notNull(),
   website: text().notNull(),
@@ -45,7 +52,7 @@ export const sponsors = pgTable("sponsors", {
 });
 
 export const organizations = pgTable("organizations", {
-  id: cuidPrimaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => randomUUID()),
   name: text().notNull(),
   license_count: integer().notNull(),
   license_until: dateTime().notNull(),
@@ -54,7 +61,7 @@ export const organizations = pgTable("organizations", {
 export const specialties = pgTable(
   "specialties",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     name_hy: text().notNull(),
     slug: text().notNull().unique("specialties_slug_key"),
     sort_order: integer().notNull().default(0),
@@ -76,7 +83,7 @@ export const specialties = pgTable(
 export const sections = pgTable(
   "sections",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     specialty_id: text().notNull(),
     name_hy: text().notNull(),
     sort_order: integer().notNull().default(0),
@@ -95,7 +102,7 @@ export const sections = pgTable(
 export const topics = pgTable(
   "topics",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     specialty_id: text().notNull(),
     name_hy: text().notNull(),
   },
@@ -109,14 +116,10 @@ export const topics = pgTable(
   ],
 );
 
-const neonAuthUsers = pgSchema("neon_auth").table("user", {
-  id: uuid("id").primaryKey(),
-});
-
 export const questions = pgTable(
   "questions",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     specialty_id: text().notNull(),
     section_id: text().notNull(),
     number: integer().notNull(),
@@ -134,7 +137,7 @@ export const questions = pgTable(
       .notNull()
       .$defaultFn(() => new Date())
       .$onUpdateFn(() => new Date()),
-    reviewed_by: uuid("reviewed_by"),
+    reviewed_by: text(),
     reviewed_at: dateTime(),
   },
   (table) => [
@@ -151,7 +154,7 @@ export const questions = pgTable(
     foreignKey({
       name: "questions_reviewed_by_fkey",
       columns: [table.reviewed_by],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     index("questions_specialty_id_idx_04170370").on(table.specialty_id),
     index("questions_specialty_id_status_number_idx_48ef38b1").on(table.specialty_id, table.status, table.number),
@@ -165,8 +168,8 @@ export const questions = pgTable(
 export const entitlements = pgTable(
   "entitlements",
   {
-    id: cuidPrimaryKey(),
-    user_id: uuid("user_id").notNull(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
+    user_id: text("user_id").notNull().unique(),
     // A null specialty_id grants access to all specialties.
     specialty_id: text(),
     source: text({ enum: entitlementSources }).notNull(),
@@ -178,7 +181,7 @@ export const entitlements = pgTable(
     foreignKey({
       name: "entitlements_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "entitlements_specialty_id_fkey",
@@ -195,8 +198,8 @@ export const entitlements = pgTable(
 export const examSessions = pgTable(
   "exam_sessions",
   {
-    id: cuidPrimaryKey(),
-    user_id: uuid("user_id").notNull(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
+    user_id: text("user_id").notNull(),
     specialty_id: text().notNull(),
     question_ids: text().array().notNull().default(sql`'{}'::text[]`),
     started_at: dateTime().notNull().defaultNow(),
@@ -211,7 +214,7 @@ export const examSessions = pgTable(
     foreignKey({
       name: "exam_sessions_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "exam_sessions_specialty_id_fkey",
@@ -228,8 +231,8 @@ export const examSessions = pgTable(
 export const answers = pgTable(
   "answers",
   {
-    id: cuidPrimaryKey(),
-    user_id: uuid("user_id").notNull(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
+    user_id: text("user_id").notNull(),
     question_id: text().notNull(),
     question_version: integer().notNull(),
     selected_option_id: text().notNull(),
@@ -242,7 +245,7 @@ export const answers = pgTable(
     foreignKey({
       name: "answers_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "answers_question_id_fkey",
@@ -265,7 +268,7 @@ export const answers = pgTable(
 export const reviewQueue = pgTable(
   "review_queue",
   {
-    user_id: uuid("user_id").notNull(),
+    user_id: text("user_id").notNull(),
     question_id: text().notNull(),
     stage: integer().notNull().default(0),
     next_review_at: dateTime().notNull(),
@@ -275,7 +278,7 @@ export const reviewQueue = pgTable(
     foreignKey({
       name: "review_queue_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "review_queue_question_id_fkey",
@@ -291,33 +294,40 @@ export const reviewQueue = pgTable(
 export const bookmarks = pgTable(
   "bookmarks",
   {
-    user_id: uuid("user_id").notNull(),
-    question_id: text().notNull(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
+    user_id: text("user_id").notNull(),
+    question_id: text("question_id").notNull(),
     created_at: dateTime().notNull().defaultNow(),
   },
   (table) => [
-    primaryKey({ name: "bookmarks_pkey", columns: [table.user_id, table.question_id] }),
     foreignKey({
       name: "bookmarks_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "bookmarks_question_id_fkey",
       columns: [table.question_id],
       foreignColumns: [questions.id],
     }),
-    index("bookmarks_user_id_idx_6c952402").on(table.user_id),
-    index("bookmarks_user_id_created_at_idx_b562028f").on(table.user_id, table.created_at),
-    index("bookmarks_question_id_idx_fcfb223c").on(table.question_id),
-  ],
+    unique("bookmarks_user_question_unique").on(
+      table.user_id,
+      table.question_id
+    ),
+    index("bookmarks_user_id_idx").on(table.user_id),
+    index("bookmarks_user_id_created_at_idx").on(
+      table.user_id,
+      table.created_at
+    ),
+    index("bookmarks_question_id_idx").on(table.question_id),
+  ]
 );
 
 export const errorReports = pgTable(
   "error_reports",
   {
-    id: cuidPrimaryKey(),
-    user_id: uuid("user_id").notNull(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
+    user_id: text("user_id"),
     question_id: text().notNull(),
     type: text().notNull(),
     text: text().notNull(),
@@ -329,7 +339,7 @@ export const errorReports = pgTable(
     foreignKey({
       name: "error_reports_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     foreignKey({
       name: "error_reports_question_id_fkey",
@@ -345,7 +355,7 @@ export const errorReports = pgTable(
 export const codeBatches = pgTable(
   "code_batches",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     sponsor_id: text(),
     duration_days: integer().notNull(),
     expires_at: dateTime().notNull(),
@@ -367,7 +377,7 @@ export const codeBatches = pgTable(
 export const codes = pgTable(
   "codes",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     batch_id: text().notNull(),
     code: text().notNull().unique("codes_code_key"),
     uses: integer().notNull().default(0),
@@ -386,7 +396,7 @@ export const codes = pgTable(
 export const calculators = pgTable(
   "calculators",
   {
-    id: cuidPrimaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => randomUUID()),
     slug: text().notNull().unique("calculators_slug_key"),
     name_hy: text().notNull(),
     config: json().notNull(),
@@ -448,7 +458,7 @@ export const organizationAdmins = pgTable(
   "organization_admins",
   {
     organization_id: text().notNull(),
-    user_id: uuid("user_id").notNull(),
+    user_id: text("user_id").notNull(),
   },
   (table) => [
     primaryKey({ name: "organization_admins_pkey", columns: [table.organization_id, table.user_id] }),
@@ -460,14 +470,14 @@ export const organizationAdmins = pgTable(
     foreignKey({
       name: "organization_admins_user_id_fkey",
       columns: [table.user_id],
-      foreignColumns: [neonAuthUsers.id],
+      foreignColumns: [user.id],
     }),
     index("organization_admins_organization_id_idx_1a5cd3f5").on(table.organization_id),
     index("organization_admins_user_id_idx_6c952402").on(table.user_id),
   ],
 );
 export const resources = pgTable("resources", {
-  id: cuidPrimaryKey(),
+  id: text("id").primaryKey().$defaultFn(() => randomUUID()),
   title: text().notNull(),
   url: text().notNull(),
   description: text(),
