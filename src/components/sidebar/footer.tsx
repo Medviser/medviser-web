@@ -2,7 +2,7 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem, } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronsUpDown, BadgeCheck, LogOut, LogIn } from "lucide-react";
+import { ChevronsUpDown, LogOut, LogIn, Cog } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Link from "next/link";
 import useCurrentUser from "@/hooks/use-current-user";
@@ -66,9 +66,9 @@ export default function AppSidebarFooter(){
                                         <DropdownMenuSeparator />
                                         <DropdownMenuGroup>
                                              <DropdownMenuItem asChild>
-                                                  <Link href="/account">
-                                                       <BadgeCheck />
-                                                       Հաշիվ
+                                                  <Link href="/settings">
+                                                       <Cog />
+                                                       Կարգավորումներ
                                                   </Link>
                                              </DropdownMenuItem>
                                              <DropdownMenuItem variant="destructive" onClick={handleSignOut}>

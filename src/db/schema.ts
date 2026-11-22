@@ -479,3 +479,4 @@ export type Specialty = typeof specialties.$inferSelect;
 export type NewSpecialty = typeof specialties.$inferInsert;
 export type Section = typeof sections.$inferSelect
 export type Topic = typeof topics.$inferSelect;
+export type ErrorReport = typeof errorReports.$inferSelect

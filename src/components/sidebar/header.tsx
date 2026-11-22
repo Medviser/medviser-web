@@ -1,13 +1,16 @@
+"use client"
 import Image from "next/image";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import Link from "next/link";
+import useCurrentTheme from "@/hooks/use-current-theme";
 
 export default function AppSidebarHeader(){
+     const theme = useCurrentTheme();
      return (
           <SidebarHeader className="items-center gap-2">
                <Link href="/" aria-label="Medviser Admin">
                     <Image
-                         src="/logomark.png"
+                         src={theme==="light" ? "/logomark.png" : "/logomark-white.png"}
                          alt="Medviser"
                          width={180}
                          height={82}

@@ -105,3 +105,16 @@ export const topicSchema = z.object({
      name_hy: z.string().trim().min(1, "Մուտքագրեք թեմայի անունը։"),
      specialty_id: z.string().trim().min(1, "Ընտրեք մասնագիտությունը։"),
 });
+
+export const profileSchema = z.object({
+     name: z.string().trim().min(1, "Մուտքագրեք ձեր անունը։"),
+});
+
+export const passwordSchema = z.object({
+     currentPassword: z.string().min(1, "Մուտքագրեք ընթացիկ գաղտնաբառը։"),
+     newPassword: z.string().min(8, "Գաղտնաբառը պետք է ունենա առնվազն 8 նիշ։"),
+     confirmPassword: z.string(),
+}).refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
+     path: ["confirmPassword"],
+     message: "Գաղտնաբառերը չեն համընկնում։",
+});

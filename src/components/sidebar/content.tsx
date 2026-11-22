@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
      BookOpen,
      ClipboardList,
-     Cog,
      Flag,
      FolderTree,
      LayoutDashboard,
@@ -71,11 +70,6 @@ const navigationGroups = [
                     title: "Սխալների հաղորդումներ",
                     href: "/reports",
                     icon: Flag,
-               },
-               {
-                    title: "Կարգավորումներ",
-                    href: "/settings",
-                    icon: Cog,
                },
           ],
      },
