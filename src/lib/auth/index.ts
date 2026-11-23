@@ -4,8 +4,10 @@ import { db } from "../drizzle";
 import { env } from "../env";
 import { nextCookies } from "better-auth/next-js";
 import { sendDeleteAccountEmail, sendPassResetEmail, sendVerificationMail } from "../email";
+import { admin } from "better-auth/plugins";
 
 import * as authSchema from "@/db/auth-schema";
+import { contentEditor, reviewer, user, admin as adminRole } from "./roles";
 
 export const auth = betterAuth({
      appName: "Medviser",
@@ -33,7 +35,19 @@ export const auth = betterAuth({
                clientSecret: env.GOOGLE_SECRET
           }
      },
-     plugins: [nextCookies()],
+     plugins: [
+          nextCookies(),
+          admin({
+               defaultRole: "user",
+               roles: {
+                    user,
+                    content_editor: contentEditor,
+                    reviewer,
+                    admin: adminRole,
+               },
+               adminRoles: ["content_editor","reviewer","admin"],
+          }),
+     ],
      user: {
           additionalFields: {
                role: {

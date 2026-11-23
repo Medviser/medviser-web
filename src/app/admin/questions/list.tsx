@@ -41,6 +41,7 @@ export default function QuestionsList({questions}: QuestionsListProps){
                          editHref={`/admin/questions/editor?id=${encodeURIComponent(question.id)}`}
                          removeAction={removeQuestion.bind(null, question.id)}
                          postDelete={remove}
+                         openLink={`/admin/questions/${encodeURIComponent(question.id)}`}
                     />
                ))}
           </div>

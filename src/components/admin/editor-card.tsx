@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogMedia, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
-import { Edit, Trash2, X } from "lucide-react";
+import { Edit, ExternalLink, Trash2, X } from "lucide-react";
 import { Spinner } from "../ui/spinner";
 
 type Props = {
@@ -14,10 +14,11 @@ type Props = {
      editHref: string;
      removeAction: () => Promise<{ success?: boolean, error?: string }>;
      postDelete: (id: string) => void
-     id: string
+     id: string,
+     openLink?: string
 };
 
-export default function EditorCard({ title, detail, editHref, removeAction, postDelete, id }: Props) {
+export default function EditorCard({ title, detail, editHref, removeAction, postDelete, id, openLink }: Props) {
      const [isPending, startTransition] = useTransition();
      function onRemove() {
           startTransition(async () => {
@@ -46,6 +47,14 @@ export default function EditorCard({ title, detail, editHref, removeAction, post
                                    Խմբագրել
                               </Link>
                          </Button>
+                         {openLink && (
+                              <Button variant="outline" asChild>
+                                   <Link href={openLink}>
+                                        <ExternalLink/>
+                                        Բացել
+                                   </Link>
+                              </Button>
+                         )}
                          <AlertDialogTrigger asChild>
                               <Button variant="destructive" size="icon" title="Ջնջել ռեսուրսը">
                                    <Trash2/>
