@@ -24,7 +24,8 @@ export const auth = betterAuth({
      },
      emailVerification: {
           sendVerificationEmail: async({url, user}) => await sendVerificationMail(user.email, url),
-          sendOnSignUp: true
+          sendOnSignUp: true,
+          sendOnSignIn: true
      },
      socialProviders: { 
           github: { 
