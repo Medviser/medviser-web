@@ -1,10 +1,9 @@
-// src/actions/sections.ts
 "use server";
 import { revalidatePath } from "next/cache";
 import { deleteSection, insertSection, updateSection } from "@/data/sections";
 import { sectionSchema } from "@/lib/schemas/index";
 import type { SectionFormValues } from "@/lib/types/schema";
-import { getAdminUser } from "@/lib/auth/admin";
+import { getUserWithPermission } from "@/lib/auth/permissions/get-user-with-permission";
 
 async function saveSection(values: SectionFormValues, id?: string): Promise<{
      error?: string,
@@ -16,8 +15,10 @@ async function saveSection(values: SectionFormValues, id?: string): Promise<{
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          section: [id === undefined ? "create" : "update",],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։",};
 
      try {
           if (id === undefined) {
@@ -45,8 +46,10 @@ export async function editSection(id: string, values: SectionFormValues) {
 export async function removeSection(id: string) {
      if (typeof id !== "string" || !id.trim()) return { error: "Բաժնի ID-ն պարտադիր է։" };
 
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          section: ["delete"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։",};
 
      try {
           if (!(await deleteSection(id))) return { error: "Բաժինը չի գտնվել։" };

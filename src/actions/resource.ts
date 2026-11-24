@@ -1,11 +1,10 @@
-// src/actions/resources.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
 import { deleteResource, insertResource, updateResource } from "@/data/resources";
 import { resourceSchema } from "@/lib/schemas/index";
 import type { ResourceFormValues } from "@/lib/types/schema";
-import { getAdminUser } from "@/lib/auth/admin";
+import { getUserWithPermission } from "@/lib/auth/permissions/get-user-with-permission";
 
 type ResourceResult = { success: true } | { error: string };
 
@@ -16,8 +15,10 @@ export async function createResource(values: ResourceFormValues): Promise<Resour
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          resource: ["create"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։"};
 
      try {
           await insertResource(parsed.data);
@@ -40,8 +41,10 @@ export async function editResource(id: string, values: ResourceFormValues): Prom
           return { error: "Ստուգեք լրացված դաշտերը։" }
      };
 
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          resource: ["update"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։"};
 
      try {
           if (!(await updateResource(id, parsed.data))) {
@@ -60,8 +63,10 @@ export async function removeResource(id: string): Promise<ResourceResult> {
           return { error: "Ռեսուրսի ID-ն պարտադիր է։" };
      }
 
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          resource: ["delete"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։"};
 
      try {
           if (!(await deleteResource(id))) {

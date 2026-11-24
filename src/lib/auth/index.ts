@@ -7,7 +7,7 @@ import { sendDeleteAccountEmail, sendPassResetEmail, sendVerificationMail } from
 import { admin } from "better-auth/plugins";
 
 import * as authSchema from "@/db/auth-schema";
-import { contentEditor, reviewer, user, admin as adminRole } from "./roles";
+import { contentEditor, reviewer, user, admin as adminRole, ac } from "./permissions";
 
 export const auth = betterAuth({
      appName: "Medviser",
@@ -36,8 +36,8 @@ export const auth = betterAuth({
           }
      },
      plugins: [
-          nextCookies(),
           admin({
+               ac,
                defaultRole: "user",
                roles: {
                     user,
@@ -45,8 +45,9 @@ export const auth = betterAuth({
                     reviewer,
                     admin: adminRole,
                },
-               adminRoles: ["content_editor","reviewer","admin"],
+               adminRoles: ["admin"],
           }),
+          nextCookies(),
      ],
      user: {
           additionalFields: {
@@ -54,7 +55,7 @@ export const auth = betterAuth({
                     type: ["user","content_editor","reviewer","admin"],
                     required: false,
                     defaultValue: "user",
-                    input: false, // don't allow user to set role
+                    input: false,
                },
                specialtyId: {
                     type: "string",

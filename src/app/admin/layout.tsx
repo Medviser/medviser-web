@@ -3,11 +3,14 @@ import AppSidebarFooter from "@/components/sidebar/footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppSidebarList from "@/components/sidebar/content";
 import AppSidebarHeader from "@/components/sidebar/header";
-import { getAdminUser } from "@/lib/auth/admin";
 import { redirect } from "next/navigation";
+import { getUserWithPermission } from "@/lib/auth/permissions/get-user-with-permission";
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-     if (!(await getAdminUser())) {
+     const user = await getUserWithPermission({
+          dashboard: ["read"]
+     });
+     if (!user) {
           redirect("/");
      }
      return (

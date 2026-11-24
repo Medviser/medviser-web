@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth/client";
 
 type AdminUser = {
@@ -38,14 +37,11 @@ const roleLabels: Record<string, string> = {
 
 export default function UsersContent() {
   const [users, setUsers] = useState<AdminUser[]>([]);
-
   const [search, setSearch] = useState("");
-
   const [isLoading, setIsLoading] = useState(true);
 
   const loadUsers = useCallback(async (searchValue?: string) => {
     setIsLoading(true);
-
     try {
       const { data, error } = await authClient.admin.listUsers({
         query: {
@@ -76,30 +72,16 @@ export default function UsersContent() {
     void loadUsers();
   }, [loadUsers]);
 
-  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    void loadUsers(search);
-  }
-
   return (
     <div className="space-y-3">
       <h1 className="font-semibold text-xl md:text-2xl lg:text-3xl">
         Օգտատերեր
       </h1>
 
-      <HeadingActions />
-
-      <form onSubmit={handleSearch} className="flex gap-2">
-        <Input
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Փնտրել էլ․ փոստով..."
-          className="max-w-sm"
-        />
-
-        <Button type="submit">Փնտրել</Button>
-      </form>
+      <HeadingActions
+        search={search}
+        onSearchChange={setSearch}
+      />
 
       <div className="overflow-hidden rounded-md border bg-card/60 shadow-sm">
         <Table>

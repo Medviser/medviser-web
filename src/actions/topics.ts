@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { deleteTopic, insertTopic, updateTopic } from "@/data/topics";
 import { topicSchema } from "@/lib/schemas/index";
 import type { TopicFormValues } from "@/lib/types/schema";
-import { getAdminUser } from "@/lib/auth/admin";
+import { getUserWithPermission } from "@/lib/auth/permissions/get-user-with-permission";
 
 export async function createTopic(values: TopicFormValues) {
      const parsed = topicSchema.safeParse(values);
@@ -12,8 +12,10 @@ export async function createTopic(values: TopicFormValues) {
           return { error: "Ստուգեք թեմայի անունն ու մասնագիտությունը։" };
      }
      
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          topic: ["create"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։"};
 
      try {
           await insertTopic(parsed.data);
@@ -33,8 +35,10 @@ export async function editTopic(id: string, values: TopicFormValues) {
           return { error: "Մուտքագրեք թեմայի անունը։" };
      }
      
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          topic: ["update"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։", };
 
      try {
           const updated = await updateTopic(id, parsed.data.name_hy) 
@@ -49,8 +53,10 @@ export async function editTopic(id: string, values: TopicFormValues) {
 }
 
 export async function removeTopic(id: string) {
-     const adminUser = await getAdminUser();
-     if(!adminUser) return {error: "Կողմնակի անձանց մուտքն արգելված է"}
+     const user = await getUserWithPermission({
+          topic: ["delete"],
+     });
+     if (!user) return { error: "Այս գործողության համար իրավունք չունեք։", };
      try {
           if (!(await deleteTopic(id))) {
                return { error: "Թեման չի գտնվել։" };
