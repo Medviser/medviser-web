@@ -4,10 +4,11 @@ import { db } from "../drizzle";
 import { env } from "../env";
 import { nextCookies } from "better-auth/next-js";
 import { sendDeleteAccountEmail, sendPassResetEmail, sendVerificationMail } from "../email";
-import { admin } from "better-auth/plugins";
+import { admin, jwt } from "better-auth/plugins";
 
 import * as authSchema from "@/db/auth-schema";
 import { contentEditor, reviewer, user, admin as adminRole, ac } from "./permissions";
+import { BASE_URL } from "../utils";
 
 export const auth = betterAuth({
      appName: "Medviser",
@@ -46,6 +47,18 @@ export const auth = betterAuth({
                     admin: adminRole,
                },
                adminRoles: ["admin"],
+          }),
+          jwt({
+               jwt: {
+                    issuer: BASE_URL,
+                    audience: "medviser-audience",
+                    expirationTime: 365 * 1000 * 60 * 60 * 24,
+               },
+               jwks: {
+                    keyPairConfig: {
+                         alg: "ES256",
+                    },
+               },
           }),
           nextCookies(),
      ],

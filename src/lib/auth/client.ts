@@ -1,10 +1,12 @@
 import { createAuthClient } from "better-auth/react"
-import { adminClient } from "better-auth/client/plugins";
+import { adminClient, jwtClient } from "better-auth/client/plugins";
 import { ac, admin, contentEditor, reviewer, user } from "./permissions";
+import { BASE_URL } from "../utils";
 
 export const authClient = createAuthClient({
-    baseURL: process.env.NODE_ENV==="production" ? "https://medviser.vercel.app" : "http://localhost:3000",
+    baseURL: BASE_URL,
     plugins: [
+        jwtClient(),
         adminClient({
             ac,
             roles: {
